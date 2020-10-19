@@ -2,12 +2,21 @@
 
 ## Deployment
 
+Via Travis CI
+
+Docs: https://developers.keboola.com/extend/component/deployment/
+
+## How to build
+
 ```
-$ export KBC_DEVELOPERPORTAL_USERNAME=myuser
-$ export KBC_DEVELOPERPORTAL_PASSWORD=mypassword
-$ export KBC_DEVELOPERPORTAL_URL=https://apps-api.keboola.com # optional
-$ docker pull quay.io/keboola/developer-portal-cli-v2:latest
+docker build -t keboola-app .
 ```
 
-Source: https://github.com/keboola/developer-portal-cli-v2
+## How to run
 
+```
+docker run -it --rm \
+  -v '/home/dstlmrk/projekty/dev/keboola-academy-app/src/:/code/src/' \
+  -v '/home/dstlmrk/projekty/dev/keboola-academy-app/data/:/code/data/' \
+  keboola-app
+```
