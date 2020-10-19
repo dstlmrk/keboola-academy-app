@@ -6,14 +6,10 @@ from pathlib import Path
 
 from kbc.env_handler import KBCEnvHandler
 
-# configuration variables
-KEY_API_TOKEN = '#api_token'
-KEY_PRINT_HELLO = 'print_hello'
-
 # #### Keep for debug
 KEY_DEBUG = 'debug'
 
-MANDATORY_PARS = [KEY_API_TOKEN, KEY_API_TOKEN]
+MANDATORY_PARS = []
 MANDATORY_IMAGE_PARS = []
 
 
@@ -24,13 +20,17 @@ class Component(KBCEnvHandler):
         default_data_dir = Path(__file__).resolve().parent.parent.joinpath('data').as_posix() \
             if not os.environ.get('KBC_DATADIR') else None
 
-        KBCEnvHandler.__init__(self, MANDATORY_PARS, log_level=logging.DEBUG if debug else logging.INFO,
-                               data_path=default_data_dir)
+        KBCEnvHandler.__init__(
+            self,
+            MANDATORY_PARS,
+            log_level=logging.DEBUG if debug else logging.INFO,
+            data_path=default_data_dir
+        )
+
         # override debug from config
         if self.cfg_params.get(KEY_DEBUG):
-            debug = True
-        if debug:
             logging.getLogger().setLevel(logging.DEBUG)
+
         logging.info('Loading configuration...')
 
         try:
@@ -41,7 +41,10 @@ class Component(KBCEnvHandler):
             exit(1)
 
     def run(self):
+
+        # get config params
         params = self.cfg_params
+        logging.info(f"params: {params}")
 
         # get input table path
         input_table_defs = self.get_input_tables_definitions()
